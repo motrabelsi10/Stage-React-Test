@@ -49,7 +49,7 @@ test('affiche le texte correct', () => {
   expect(buttonElement).toBeInTheDocument();
 });
 
-
+```
 ## Explication 
 Voyons comment Jest et RTL sont complémentaires dans cet exemple :
 
