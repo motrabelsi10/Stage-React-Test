@@ -37,7 +37,9 @@ En utilisant Jest avec RTL, vous pouvez bénéficier de l'infrastructure de test
 
 ## Exemple 
 
-''' reactjs 
+Voici un exemple de test utilisant Jest et RTL pour le composant `Button` :
+
+```jsx
 import { render, screen } from '@testing-library/react';
 import Button from './Button';
 
@@ -46,6 +48,7 @@ test('affiche le texte correct', () => {
   const buttonElement = screen.getByText(/Cliquez-moi/i);
   expect(buttonElement).toBeInTheDocument();
 });
+
 
 ## Explication 
 Voyons comment Jest et RTL sont complémentaires dans cet exemple :
