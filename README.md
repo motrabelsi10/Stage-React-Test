@@ -35,3 +35,22 @@ Jest et RTL sont complémentaires dans l'écosystème de test de React. Jest off
 En utilisant Jest avec RTL, vous pouvez bénéficier de l'infrastructure de test puissante de Jest tout en adoptant les bonnes pratiques de test recommandées par RTL. Cela vous permet de créer des tests complets et robustes pour vos applications React, en vous assurant que vos composants fonctionnent correctement du point de vue de l'utilisateur.
 
 
+## Exemple 
+
+''' reactjs 
+import { render, screen } from '@testing-library/react';
+import Button from './Button';
+
+test('affiche le texte correct', () => {
+  render(<Button text="Cliquez-moi" />);
+  const buttonElement = screen.getByText(/Cliquez-moi/i);
+  expect(buttonElement).toBeInTheDocument();
+});
+
+## Explication 
+Voyons comment Jest et RTL sont complémentaires dans cet exemple :
+
+- Jest fournit la structure et les fonctionnalités de base pour écrire et exécuter des tests JavaScript. Il gère l'exécution des tests, fournit des assertions (comme expect()) pour vérifier les résultats, et génère des rapports de couverture de code.
+- RTL (React Testing Library) est une bibliothèque qui se concentre sur la manière dont les utilisateurs interagissent avec les composants React. Elle fournit des utilitaires (comme render() et screen.getByText()) pour faciliter les tests basés sur le comportement réel de l'interface utilisateur.
+- Dans notre exemple, nous utilisons Jest pour exécuter le test et RTL pour rendre le composant, rechercher l'élément de bouton et effectuer des assertions sur celui-ci. Jest nous donne l'infrastructure de test et les outils de base, tandis que RTL nous aide à adopter une approche centrée sur l'utilisateur pour tester notre composant React.
+
