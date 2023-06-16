@@ -57,3 +57,84 @@ Voyons comment Jest et RTL sont complémentaires dans cet exemple :
 - RTL (React Testing Library) est une bibliothèque qui se concentre sur la manière dont les utilisateurs interagissent avec les composants React. Elle fournit des utilitaires (comme render() et screen.getByText()) pour faciliter les tests basés sur le comportement réel de l'interface utilisateur.
 - Dans notre exemple, nous utilisons Jest pour exécuter le test et RTL pour rendre le composant, rechercher l'élément de bouton et effectuer des assertions sur celui-ci. Jest nous donne l'infrastructure de test et les outils de base, tandis que RTL nous aide à adopter une approche centrée sur l'utilisateur pour tester notre composant React.
 
+## Utilisation 
+
+### Avec les nombres 
+```jsx
+test('deux plus deux', () => {
+  const value = 2 + 2;
+  expect(value).toBeGreaterThan(3);
+  expect(value).toBeGreaterThanOrEqual(3.5);
+  expect(value).toBeLessThan(5);
+  expect(value).toBeLessThanOrEqual(4.5);
+  expect(value).toBe(4);
+  expect(value).toEqual(4);
+});
+```
+
+### Avec les chaines de caracteres 
+```jsx
+test('Il ya bon dans bonjour', () => {
+  expect('bonjour').toMatch(/bon/); // ajouter expect ().not.toMatch() dans le cas contraire 
+});
+
+
+const players = ["messi","msakni","neymar"];
+
+test('test tab', () => {
+  expect(players).toContain("messi");
+  expect(players).not.toContain("mbappé");
+});
+```
+
+### Exemple d'execution 
+
+PASS  src/App.test.js // le test est validé 
+  √ deux plus deux (7 ms) // le nom de la fonction test 
+  √ Il ya bon dans bonjour (1 ms)
+  √ test tab (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        5.872 s
+Ran all test suites related to changed files.
+
+
+### Syntaxe 
+```jsx
+import { render, screen } from '@testing-library/react'; // importation des render et screen 
+
+test('should render input and button', () => {
+  render(<App />); // rendre l'interface a tester ( RTL ) 
+  
+  const input = screen.getByLabelText('Text Field'); // getter l'element a tester 
+  expect(input).toBeInTheDocument(); // tester cette element se trouve dans cette fenetre ou non ! 
+  
+  const btn = screen.getByTestId('btn-ajouter');
+  expect(btn).toBeInTheDocument();
+});
+
+```
+
+### Comment recuperer les elements 
+```jsx
+// code dans App.js
+    <p>tester en react</p>
+    <input type="text" data-testid="my-input" />
+    <button data-testid="my-button">Cliquez-moi</button> // ici on peut mettre un id pour un element. 
+// code dans App.test.js
+test("get by",() => {
+  render(<App />);
+  const element = screen.getByText("tester en react"); // on recupere le texte qui se trouve dans la balise <p>
+  const btn = screen.getByRole("button"); // getter un bouton
+  const input = screen.getByRole("textbox"); // getter un input 
+  expect(element).toBeInTheDocument();
+
+  const buttonElement = screen.getByTestId('my-button'); // on recupere l'element by son id 
+});
+```
+
+
+
+
