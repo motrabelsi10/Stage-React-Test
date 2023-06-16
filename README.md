@@ -88,7 +88,7 @@ test('test tab', () => {
 ```
 
 ### Exemple d'execution 
-
+```jsx
 PASS  src/App.test.js // le test est validé 
   √ deux plus deux (7 ms) // le nom de la fonction test 
   √ Il ya bon dans bonjour (1 ms)
@@ -99,7 +99,7 @@ Tests:       3 passed, 3 total
 Snapshots:   0 total
 Time:        5.872 s
 Ran all test suites related to changed files.
-
+```
 
 ### Syntaxe 
 ```jsx
@@ -134,6 +134,21 @@ test("get by",() => {
   const buttonElement = screen.getByTestId('my-button'); // on recupere l'element by son id 
 });
 ```
+
+### Exemple de totoList - FireEvent
+```jsx
+  const inputElement = screen.getByTestId('todo-input');
+  const addButtonElement = screen.getByTestId('add-button');
+  const todoListElement = screen.getByTestId('todo-list');
+
+  fireEvent.change(inputElement, { target: { value: 'Nouvelle tâche' } }); // methode .change prend deux parametre , le premier l'elemenet , le deuxieme est pour la valeur 
+  fireEvent.submit(addButtonElement); // L'action du button 
+
+  expect(screen.getByText('Nouvelle tâche')).toBeInTheDocument();
+  expect(inputElement.value).toBe('');
+```
+
+
 
 
 
