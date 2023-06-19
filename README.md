@@ -148,6 +148,40 @@ test("get by",() => {
   expect(inputElement.value).toBe('');
 ```
 
+### Tester le code asynchone 
+
+```jsx
+  test('renders a count of 1 after clicking the increment button', async () => {
+    user.setup()
+    render(<Counter />)
+    const incrementButton = screen.getByRole('button', { name: 'Increment' })
+    await user.click(incrementButton)
+    const countElement = screen.getByRole('heading')
+    expect(countElement).toHaveTextContent('1')
+  })
+
+  test('renders a count of 2 after clicking the increment button twice', async () => {
+    user.setup()
+    render(<Counter />)
+    const incrementButton = screen.getByRole('button', { name: 'Increment' })
+    await user.click(incrementButton)
+    await user.click(incrementButton)
+    const countElement = screen.getByRole('heading')
+    expect(countElement).toHaveTextContent('2')
+  })
+
+```
+#### Explication 
+Dans ce code de test, les mots-clés async et await sont utilisés pour gérer les opérations asynchrones de manière synchrone et séquentielle.
+Dans les tests donnés, le mot-clé async est utilisé pour déclarer les fonctions de test comme des fonctions asynchrones.
+
+Le mot-clé await est utilisé pour attendre la fin des opérations asynchrones. Dans ce cas, il est utilisé avec la fonction user.click() pour attendre que le bouton soit cliqué et que l'action correspondante soit terminée avant de passer à l'instruction suivante.
+
+Cela garantit que les tests se déroulent de manière séquentielle, en attendant la fin des opérations asynchrones avant de vérifier les résultats attendus à l'aide des assertions, comme expect(countElement).toHaveTextContent('1') et expect(countElement).toHaveTextContent('2').
+
+
+
+
 
 
 
