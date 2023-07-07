@@ -290,3 +290,78 @@ test("Mock Function", () => {
 ```
 
 
+
+### Event 
+
+```jsx
+const newProjectButton = screen.getByTestId("create-project-form");
+fireEvent.click(newProjectButton);
+```
+
+Nous sélectionnons le bouton "New Project" en utilisant screen.getByTestId avec le data-testid "create-project-form". Ensuite, nous déclenchons un événement de clic sur ce bouton en utilisant fireEvent.click. Cela simule le fait de cliquer sur le bouton "New Project".
+
+```jsx
+
+// 1 - 
+const titleInput = screen.getByLabelText(/Title/i);
+const descriptionInput = screen.getByLabelText(/Description/i);
+const dateInput = screen.getByLabelText(/Due Date/i);
+const budgetInput = screen.getByLabelText(/Budget/i);
+const createProjectButton = screen.getByTestId('create-project-button');
+
+fireEvent.change(titleInput, { target: { value: 'Project 1' } });
+fireEvent.change(descriptionInput, { target: { value: 'Description of Project 1' } });
+fireEvent.change(dateInput, { target: { value: '2023-07-15' } });
+fireEvent.change(budgetInput, { target: { value: '1000' } });
+
+// 2 - 
+fireEvent.click(createProjectButton);
+```
+
+1- Nous récupérons les différents éléments du formulaire en utilisant screen.getByLabelText avec des expressions régulières pour les trouver par leur libellé. Par exemple, screen.getByLabelText(/Title/i) recherche l'élément d'entrée correspondant à l'étiquette contenant le texte "Title". Ensuite, nous utilisons fireEvent.change pour simuler le changement de valeur des champs du formulaire en utilisant la propriété target.value. Nous changeons le titre, la description, la date et le budget du projet pour les valeurs de test.
+
+2- Nous déclenchons un événement de clic sur le bouton de création de projet en utilisant fireEvent.click. Cela simule le fait de soumettre le formulaire de création de projet.
+
+
+
+### History 
+
+```jsx
+ const history = createMemoryHistory();
+  render(
+    <Router history={history}>
+      <Projects />
+    </Router>
+```
+
+Ce test vérifie si une nouvelle carte de projet est ajoutée lorsque le formulaire "Create Project" est soumis. Nous créons un objet history en utilisant createMemoryHistory pour simuler l'historique de navigation. Ensuite, nous rendons le composant Projects enveloppé dans un composant Router fourni par react-router-dom. Cela nous permet de tester les fonctionnalités de routage.
+
+### Verifier et comparer deux valeurs
+
+```jsx
+  // Get the initial value of totalBudgets
+  const initialTotalBudgets = screen.getByTestId('total-budgets').textContent;
+
+  // Enter des données dans les champs.
+
+  // Get the updated value of totalBudgets
+  const updatedTotalBudgets = screen.getByTestId('total-budgets').textContent;
+
+  // Convert the values to numbers for comparison
+  const initialTotalBudgetsValue = parseFloat(initialTotalBudgets);
+  const updatedTotalBudgetsValue = parseFloat(updatedTotalBudgets);
+
+  // Get the budget of the new project
+  const newProjectBudget = parseFloat(budgetInput.value);
+
+  // Check if the value of totalBudgets has increased correctly
+  expect(updatedTotalBudgetsValue).toBeCloseTo(initialTotalBudgetsValue + newProjectBudget, 2);
+});
+```
+
+Nous récupérons la valeur mise à jour du total des budgets à l'aide de screen.getByTestId.
+Nous convertissons les valeurs initiale et mise à jour en nombres à l'aide de parseFloat pour pouvoir les comparer.
+Nous récupérons le montant du budget du nouveau projet à partir de la valeur du champ de budget.
+Enfin, nous utilisons expect fourni par @testing-library/jest-dom pour vérifier si la valeur du total des budgets a augmenté correctement en comparant la valeur mise à jour avec la somme de la valeur initiale et du montant du nouveau projet.
+
+
