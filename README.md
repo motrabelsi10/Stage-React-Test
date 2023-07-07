@@ -360,8 +360,108 @@ Ce test vérifie si une nouvelle carte de projet est ajoutée lorsque le formula
 ```
 
 Nous récupérons la valeur mise à jour du total des budgets à l'aide de screen.getByTestId.
+
 Nous convertissons les valeurs initiale et mise à jour en nombres à l'aide de parseFloat pour pouvoir les comparer.
+
 Nous récupérons le montant du budget du nouveau projet à partir de la valeur du champ de budget.
+
 Enfin, nous utilisons expect fourni par @testing-library/jest-dom pour vérifier si la valeur du total des budgets a augmenté correctement en comparant la valeur mise à jour avec la somme de la valeur initiale et du montant du nouveau projet.
 
+Aprés l'ajout de deux projets par exemple , on peut vérifier : 
+```jsx
+  const projectCards = screen.getAllByTestId('project-card');
+    expect(projectCards).toHaveLength(2);
+```
 
+On peut vérifier la valeur d'un Label : 
+```jsx
+  // Total budgets and total projects should be updated
+  expect(screen.getByTestId('total-budgets')).toHaveTextContent('1000');
+  expect(screen.getByTestId('total-projects')).toHaveTextContent('1');
+```
+
+### WaitFor 
+
+```jsx
+ await waitFor(() => expect(screen.getByTestId('total-budgets')).toHaveTextContent('1000'));
+```
+
+Nous attendons que la soumission du formulaire mette à jour le total des budgets en utilisant await waitFor fourni par @testing-library/react. Nous utilisons screen.getByTestId pour sélectionner l'élément avec l'attribut data-testid correspondant à "total-budgets". Ensuite, nous vérifions que la valeur du total des budgets est mise à jour correctement après l'ajout du premier projet.
+
+
+### ToBe 
+```jsx
+  // Check if the three Card2 components are displayed in a single line
+  const cardContainer = screen.getByTestId('card-container');
+  expect(cardContainer).toBeInTheDocument();
+  expect(cardContainer.children.length).toBe(3);
+```
+});
+
+### within 
+
+```jsx 
+  // Click on the "Delete" button of the first project card
+  const deleteButton = within(initialProjectCards[0]).getByTestId('supp');
+  fireEvent.click(deleteButton);
+```
+
+Nous sélectionnons le bouton "Delete" de la première carte de projet en utilisant within pour rechercher à l'intérieur de la carte, puis en utilisant getByTestId pour le sélectionner. Ensuite, nous simulons un clic sur le bouton "Delete" en utilisant fireEvent.click.
+
+### queryAllByTestId
+
+```jsx 
+  // Get the updated number of project cards
+  const updatedProjectCards = screen.queryAllByTestId('project-card');
+
+  // Check if the first project card is deleted
+  expect(updatedProjectCards.length).toBe(initialProjectCards.length - 1);
+});
+
+```
+
+queryAllByTestId : Cette fonction retourne une liste de tous les éléments correspondants au testId spécifié. Si aucun élément ne correspond, elle renvoie une liste vide ([]).
+getAllByTestId : Cette fonction retourne une liste de tous les éléments correspondants au testId spécifié. Si aucun élément ne correspond, elle déclenche une erreur.
+Dans le cas du test pour supprimer une carte de projet, nous utilisons queryAllByTestId car nous voulons vérifier si la carte de projet a été supprimée avec succès. Si nous utilisions getAllByTestId et qu'aucune carte de projet ne serait trouvée, cela déclencherait une erreur et le test échouerait. En utilisant queryAllByTestId, nous pouvons simplement vérifier si la longueur de la liste des cartes de projet mises à jour est égale à la longueur initiale moins un, sans déclencher d'erreur en cas de suppression réussie.
+
+### ToBeNull() 
+
+```jsx 
+    // Get the project card before deletion
+    const projectCard = screen.getByTestId('project-card');
+  
+    // Click on the "Delete" button of the first project card
+    const deleteButton = screen.getByTestId('supp');
+    fireEvent.click(deleteButton);
+  
+    // Check if the project card is no longer in the DOM
+    expect(screen.queryByTestId('project-card')).toBeNull();
+```
+
+Nous utilisons toBeNull() pour vérifier si l'élément retourné par queryByTestId est nul, ce qui indique que la carte du projet a été supprimée avec succès.
+
+
+### Mock 
+
+```jsx
+   const onSubmitMock = jest.fn();
+   render(<CreateProjectForm onSubmit={onSubmitMock} />);
+
+ // Remplir les champs du formulaire
+    expect(onSubmitMock).toHaveBeenCalledTimes(1);
+    expect(onSubmitMock).toHaveBeenCalledWith(
+      {
+        title: 'Mon projet',
+        description: 'Description de mon projet',
+        date: '2023-06-22',
+        budget: '5000'
+      },
+      1, // Valeur attendue pour projectCount
+      5000 // Valeur attendue pour totalBudget
+    );
+```
+
+Nous créons un mock de la fonction onSubmit en utilisant jest.fn(). Cela nous permettra de vérifier si cette fonction est appelée avec les bonnes valeurs lors de la soumission du formulaire.
+Nous rendons le composant CreateProjectForm en lui passant le mock de onSubmit en tant que prop.
+
+Nous vérifions que la fonction onSubmitMock a été appelée une seule fois avec les bonnes valeurs. Cela inclut les valeurs des champs du formulaire ainsi que les valeurs attendues pour projectCount (1) et totalBudget (5000).
